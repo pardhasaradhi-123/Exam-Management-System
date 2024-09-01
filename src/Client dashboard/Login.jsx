@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import img from "../assets/logo.jpeg";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function AuthForm() {
+  const [isSignUp, setIsSignUp] = useState(true);
+
   const inputs = [
     { id: 0, label: "email", inputType: "email", placeholder: "Enter Email" },
     {
@@ -13,21 +14,37 @@ export default function Login() {
     },
   ];
 
+  if (isSignUp) {
+    inputs.unshift({
+      id: 2,
+      label: "username",
+      inputType: "text",
+      placeholder: "Enter Username",
+    });
+  }
+
   const navigate = useNavigate();
 
   const [inputState, setInputState] = useState({
     email: "",
     password: "",
+    username: "",
   });
 
   const [errors, setErrors] = useState({
     email: "",
     password: "",
+    username: "",
   });
 
   const validate = () => {
     let valid = true;
-    const newErrors = { email: "", password: "" };
+    const newErrors = { email: "", password: "", username: "" };
+
+    if (isSignUp && !inputState.username) {
+      newErrors.username = "Username is required";
+      valid = false;
+    }
 
     if (!inputState.email) {
       newErrors.email = "Email is required";
@@ -59,33 +76,80 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (
-      validate() &&
-      inputState.email === "client@gmail.com" &&
-      inputState.password === "1234567890"
-    ) {
-      navigate("/student");
-    } else {
-      console.error(errors);
-      navigate("/admin-dashboard");
+    if (validate()) {
+      const existingData =
+        JSON.parse(localStorage.getItem("authDataList")) || [];
+
+      if (isSignUp) {
+        // Check if the email already exists in localStorage
+        const existingAccount = existingData.find(
+          (account) => account.email === inputState.email
+        );
+
+        if (existingAccount) {
+          setErrors((prev) => ({
+            ...prev,
+            email: "Account with this email already exists",
+          }));
+        } else {
+          // Add new account data to localStorage
+          const newData = {
+            email: inputState.email,
+            password: inputState.password,
+            username: inputState.username,
+          };
+
+          existingData.push(newData);
+
+          localStorage.setItem("authDataList", JSON.stringify(existingData));
+
+          navigate("/student");
+        }
+      } else {
+        // Authenticate user
+        const authenticatedUser = existingData.find(
+          (account) =>
+            account.email === inputState.email &&
+            account.password === inputState.password
+        );
+
+        if (authenticatedUser) {
+          // If authenticated, redirect to the admin dashboard
+          navigate("/admin-dashboard");
+        } else {
+          setErrors((prev) => ({
+            ...prev,
+            email: "Invalid email or password",
+          }));
+        }
+      }
     }
   };
 
   return (
     <>
-      <div className="h-screen w-screen grid grid-cols-2 overflow-hidden">
-        <div className="h-full">
-          <img src={img} alt="Logo" className="h-full" />
-        </div>
-        <div className="flex items-center justify-center">
-          <form
-            className="bg-white rounded-lg p-7 w-96"
-            onSubmit={handleSubmit}
-          >
-            <div className="flex flex-col justify-center items-center mb-5">
-              <h1 className="text-3xl font-bold mb-4 text-center">Login</h1>
-              <div className="bg-indigo-600 w-12 h-2 rounded-full"></div>
-            </div>
+      <div className="h-screen w-screen flex items-center justify-center bg-indigo-900">
+        <div className="bg-white rounded-lg p-7 w-[590px] max-sm:p-3">
+          <div className="flex justify-center mb-5 max-sm:mb-3">
+            <button
+              className={`text-2xl font-bold p-3 ${
+                isSignUp ? "text-indigo-600" : "text-gray-500"
+              }`}
+              onClick={() => setIsSignUp(true)}
+            >
+              Sign Up
+            </button>
+            <button
+              className={`text-2xl font-bold p-3 ${
+                !isSignUp ? "text-indigo-600" : "text-gray-500"
+              }`}
+              onClick={() => setIsSignUp(false)}
+            >
+              Sign In
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit}>
             {inputs.map((eachInput) => (
               <div key={eachInput.id} className="flex flex-col gap-3 mt-3">
                 <label htmlFor={eachInput.label} className="capitalize">
@@ -110,11 +174,25 @@ export default function Login() {
             ))}
             <button
               type="submit"
-              className="bg-indigo-200 hover:bg-indigo-400 w-full mt-5 p-3 rounded-md uppercase font-semibold"
+              className="bg-indigo-600 hover:bg-indigo-900 hover:text-white w-full mt-5 p-3 rounded-md uppercase font-semibold"
             >
-              login
+              {isSignUp ? "Sign Up" : "Sign In"}
             </button>
           </form>
+          <div className="my-5">
+            <h2 className="text-lg font-semibold">Note:</h2>
+            <ol className="list-decimal pl-10">
+              <li>
+                If you are a student and don't have an account, please use the
+                Sign Up In form.
+              </li>
+              <li>
+                If you are a student and already have an account, please use the
+                Sign In form.
+              </li>
+              <li>If you are a teacher, please use the Sign In form.</li>
+            </ol>
+          </div>
         </div>
       </div>
     </>
