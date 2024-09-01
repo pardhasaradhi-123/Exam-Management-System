@@ -5,6 +5,7 @@ import Exam from "./Client dashboard/Exam";
 import ExamSchedule from "./Client dashboard/ExamSchedule";
 import Login from "./Client dashboard/Login";
 import AdminLayout from "./Admin dashboard/AdminLayout";
+import AdminPanel from "./Admin dashboard/AdminLayout";
 
 function App() {
   return (
