@@ -1,14 +1,20 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function AuthForm() {
   const [isSignUp, setIsSignUp] = useState(true);
 
   const inputs = [
-    { id: 0, label: "email", inputType: "email", placeholder: "Enter Email" },
     {
-      id: 1,
+      id: 0,
+      label: "username",
+      inputType: "text",
+      placeholder: "Enter Username",
+    },
+    { id: 1, label: "email", inputType: "email", placeholder: "Enter Email" },
+    {
+      id: 2,
       label: "password",
       inputType: "password",
       placeholder: "Enter Password",
@@ -16,12 +22,20 @@ export default function AuthForm() {
   ];
 
   if (isSignUp) {
-    inputs.unshift({
-      id: 2,
-      label: "username",
-      inputType: "text",
-      placeholder: "Enter Username",
+    inputs.push({
+      id: 3,
+      label: "department",
+      inputType: "select",
+      options: [
+        "Select Departments",
+        "CSE",
+        "Mechanical",
+        "Electrical",
+        "Civil",
+      ],
     });
+  } else {
+    inputs.shift();
   }
 
   const navigate = useNavigate();
@@ -29,18 +43,20 @@ export default function AuthForm() {
   const [inputState, setInputState] = useState({
     email: "",
     password: "",
+    department: "Select Departments",
     username: "",
   });
 
   const [errors, setErrors] = useState({
     email: "",
     password: "",
+    department: "",
     username: "",
   });
 
   const validate = () => {
     let valid = true;
-    const newErrors = { email: "", password: "", username: "" };
+    const newErrors = { email: "", password: "", department: "", username: "" };
 
     if (isSignUp && !inputState.username) {
       newErrors.username = "Username is required";
@@ -63,6 +79,11 @@ export default function AuthForm() {
       valid = false;
     }
 
+    if (isSignUp && inputState.department === "Select Departments") {
+      newErrors.department = "Department is required";
+      valid = false;
+    }
+
     setErrors(newErrors);
     return valid;
   };
@@ -82,7 +103,6 @@ export default function AuthForm() {
         JSON.parse(localStorage.getItem("authDataList")) || [];
 
       if (isSignUp) {
-        // Check if the email already exists in localStorage
         const existingAccount = existingData.find(
           (account) => account.email === inputState.email
         );
@@ -90,48 +110,39 @@ export default function AuthForm() {
         if (existingAccount) {
           toast.warn("Account already exists! Go to Sign In Form");
         } else {
-          // Add new account data to localStorage
           const newData = {
             email: inputState.email,
             password: inputState.password,
             username: inputState.username,
+            department: inputState.department,
           };
 
           existingData.push(newData);
-
           localStorage.setItem("authDataList", JSON.stringify(existingData));
 
-          toast.success(`${inputState.username} sign up successfull!`, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          toast.success(`${inputState.username} sign up successful!`);
           setInputState({
             email: "",
             password: "",
+            department: "Select Departments",
             username: "",
           });
           navigate("/student");
         }
-      } else if (!isSignUp) {
-        if (
-          inputState.email === "teacher@gmail.com" &&
-          inputState.password === "1234567890"
-        ) {
-          navigate("/admin-dashboard");
-        } else {
-          toast.error("Account is not exists!");
-        }
+      } else {
         const existingUser = existingData.find(
           (user) => user.email === inputState.email
         );
         if (existingUser) {
           navigate("/student");
+        } else {
+          toast.error("Account does not exist!");
+        }
+        if (
+          inputState.email === "staff@gmail.com" &&
+          inputState.password === "1234567890"
+        ) {
+          navigate("/admin-dashboard");
         }
       }
     }
@@ -140,7 +151,9 @@ export default function AuthForm() {
   return (
     <>
       <div className="h-screen w-screen flex items-center justify-center bg-indigo-900">
-        <div className="bg-white rounded-lg p-7 w-[590px] max-sm:p-3">
+        <div
+          className={`max-h-[100vh] bg-white rounded-lg p-5 max-w-[700px] max-sm:p-3 overflow-y-auto`}
+        >
           <div className="flex justify-center mb-5 max-sm:mb-3">
             <button
               className={`text-2xl font-bold p-3 ${
@@ -151,11 +164,13 @@ export default function AuthForm() {
                 setErrors({
                   email: "",
                   password: "",
+                  department: "",
                   username: "",
                 });
                 setInputState({
                   email: "",
                   password: "",
+                  department: "Select Departments",
                   username: "",
                 });
               }}
@@ -171,11 +186,13 @@ export default function AuthForm() {
                 setErrors({
                   email: "",
                   password: "",
+                  department: "",
                   username: "",
                 });
                 setInputState({
                   email: "",
                   password: "",
+                  department: "Select Departments",
                   username: "",
                 });
               }}
@@ -188,18 +205,34 @@ export default function AuthForm() {
             {inputs.map((eachInput) => (
               <div key={eachInput.id} className="flex flex-col gap-3 mt-3">
                 <label htmlFor={eachInput.label} className="capitalize">
-                  {eachInput.label}:
+                  {eachInput.label}
+                  <span className="text-red-600">*</span>:
                 </label>
-                <input
-                  type={eachInput.inputType}
-                  placeholder={eachInput.placeholder}
-                  className={`p-3 outline-none bg-[#f5f5f5] rounded-md ${
-                    errors[eachInput.label] ? "border-red-500 border-2" : ""
-                  }`}
-                  name={eachInput.label}
-                  value={inputState[eachInput.label]}
-                  onChange={handleChange}
-                />
+                {eachInput.inputType === "select" ? (
+                  <select
+                    name={eachInput.label}
+                    value={inputState[eachInput.label]}
+                    onChange={handleChange}
+                    className="p-3 outline-none bg-[#f5f5f5] rounded-md"
+                  >
+                    {eachInput.options.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type={eachInput.inputType}
+                    placeholder={eachInput.placeholder}
+                    className={`p-3 outline-none bg-[#f5f5f5] rounded-md ${
+                      errors[eachInput.label] ? "border-red-500 border-2" : ""
+                    }`}
+                    name={eachInput.label}
+                    value={inputState[eachInput.label]}
+                    onChange={handleChange}
+                  />
+                )}
                 {errors[eachInput.label] && (
                   <span className="text-red-500 text-sm">
                     {errors[eachInput.label]}
@@ -219,7 +252,7 @@ export default function AuthForm() {
             <ol className="list-decimal pl-10">
               <li>
                 If you are a student and don't have an account, please use the
-                Sign Up In form.
+                Sign Up form.
               </li>
               <li>
                 If you are a student and already have an account, please use the

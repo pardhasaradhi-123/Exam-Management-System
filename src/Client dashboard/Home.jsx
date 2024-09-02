@@ -72,7 +72,7 @@ export default function Home() {
         {cardData.map((card) => (
           <article
             key={card.id}
-            className={`rounded-md ${card.bgColor} shadow-md shadow-violet-200 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:shadow-violet-300 p-4`}
+            className={`flex flex-col justify-center rounded-md ${card.bgColor} shadow-md shadow-violet-200 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:shadow-violet-300 p-4`}
           >
             <div className="flex items-center justify-between">
               <p
@@ -82,12 +82,14 @@ export default function Home() {
               </p>
               <card.icon size={38} className={card.textColor} />
             </div>
-            <p className="flex justify-center items-center text-md my-2 p-4 text-gray-500">
-              {card.desc}
-            </p>
-            <h1 className={`font-semibold text-xl ${card.textColor}`}>
-              {card.value}
-            </h1>
+            <div>
+              <p className="flex justify-center items-center text-md my-2 p-4 text-gray-500">
+                {card.desc}
+              </p>
+              <h1 className={`font-semibold text-xl ${card.textColor}`}>
+                {card.value}
+              </h1>
+            </div>
           </article>
         ))}
       </div>

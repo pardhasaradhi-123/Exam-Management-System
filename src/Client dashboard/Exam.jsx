@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   FaCheckCircle,
   FaExclamationCircle,
@@ -8,15 +8,6 @@ import {
 } from "react-icons/fa";
 
 export default function Exam() {
-  const [flippedCards, setFlippedCards] = useState({});
-
-  const handleFlip = (id) => {
-    setFlippedCards((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
-
   const examCardsData = [
     {
       id: 1,
@@ -58,8 +49,6 @@ export default function Exam() {
       textColor: "text-blue-700",
       progressColor: "bg-blue-600",
       status: "In Progress",
-      btnName: "take test",
-      score: "43/50",
     },
     {
       id: 2,
@@ -71,8 +60,6 @@ export default function Exam() {
       textColor: "text-green-700",
       progressColor: "bg-green-600",
       status: "Completed",
-      btnName: "view score",
-      score: "44/50",
     },
     {
       id: 3,
@@ -84,8 +71,6 @@ export default function Exam() {
       textColor: "text-yellow-900",
       progressColor: "bg-yellow-600",
       status: "In Progress",
-      btnName: "take test",
-      score: "50/50",
     },
     {
       id: 4,
@@ -97,8 +82,6 @@ export default function Exam() {
       textColor: "text-green-700",
       progressColor: "bg-green-600",
       status: "Completed",
-      btnName: "view score",
-      score: "41/50",
     },
     {
       id: 5,
@@ -110,8 +93,6 @@ export default function Exam() {
       textColor: "text-red-700",
       progressColor: "bg-red-600",
       status: "Not Started",
-      btnName: "take test",
-      score: "40/50",
     },
   ];
 
@@ -142,72 +123,35 @@ export default function Exam() {
         {examProgressData.map((exam) => (
           <article
             key={exam.id}
-            className={`rounded-md shadow-md transform transition-transform duration-300 hover:scale-105 p-4 flex flex-col justify-between ${
-              flippedCards[exam.id] ? "flipped bg-white" : "bg-bgGray"
-            }`}
+            className={`rounded-md shadow-md transform transition-transform duration-300 hover:scale-105 p-4 bg-bgGray flex flex-col justify-between`}
           >
-            {flippedCards[exam.id] ? (
-              <>
-                <div>
-                  <h1
-                    className={`font-semibold text-lg capitalize ${exam.textColor}`}
-                  >
-                    {exam.examName}
-                  </h1>
-                </div>
-                <h1
-                  className={` flex justify-center items-centerfont-bold text-3xl max-sm:my-5 ${exam.textColor}`}
+            <div>
+              <div className="flex items-center justify-between">
+                <p
+                  className={`font-semibold text-lg capitalize ${exam.textColor}`}
                 >
-                  {exam.score}
-                </h1>
-                <div>
-                  <button
-                    className="w-full outline-none uppercase p-3 mt-4 rounded-full bg-gray-500 font-semibold text-lg tracking-wide text-white"
-                    onClick={() => handleFlip(exam.id)}
-                  >
-                    Go Back
-                  </button>
-                </div>
-              </>
-            ) : (
-              <div>
-                <div className="flex items-center justify-between">
-                  <p
-                    className={`font-semibold text-lg capitalize ${exam.textColor}`}
-                  >
-                    {exam.examName}
-                  </p>
-                  <exam.icon size={38} className={exam.textColor} />
-                </div>
-                <p className="flex justify-center items-center text-md my-2 p-4 text-gray-600">
-                  {exam.description}
+                  {exam.examName}
                 </p>
-                <div className="flex items-center justify-between">
-                  <h1 className={`font-semibold text-xl ${exam.textColor}`}>
-                    {exam.progress}
-                  </h1>
-                  <span className={`font-medium text-md ${exam.textColor}`}>
-                    {exam.status}
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-4 mt-4">
-                  <div
-                    className={`${exam.progressColor} h-full rounded-full`}
-                    style={{ width: exam.progress }}
-                  ></div>
-                </div>
-                <button
-                  className={`w-full outline-none uppercase p-3 mt-4 rounded-full ${exam.bgColor} font-semibold text-lg tracking-wide text-white`}
-                  onClick={
-                    exam.btnName === "view score"
-                      ? () => handleFlip(exam.id)
-                      : null
-                  }
-                >
-                  {exam.btnName}
-                </button>
+                <exam.icon size={38} className={exam.textColor} />
               </div>
-            )}
+              <p className="flex justify-center items-center text-md my-2 p-4 text-gray-600">
+                {exam.description}
+              </p>
+              <div className="flex items-center justify-between">
+                <h1 className={`font-semibold text-xl ${exam.textColor}`}>
+                  {exam.progress}
+                </h1>
+                <span className={`font-medium text-md ${exam.textColor}`}>
+                  {exam.status}
+                </span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-4 mt-4">
+                <div
+                  className={`${exam.progressColor} h-full rounded-full`}
+                  style={{ width: exam.progress }}
+                ></div>
+              </div>
+            </div>
           </article>
         ))}
       </div>

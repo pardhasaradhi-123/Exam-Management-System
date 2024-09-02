@@ -77,15 +77,6 @@ const Sidebar = ({ onSelectDepartment }) => {
 
 export default Sidebar;*/
 
-
-
-
-
-
-
-
-
-
 import React, { useState } from "react";
 import {
   FaHome,
@@ -101,7 +92,6 @@ import { Link } from "react-router-dom";
 const AdminSidebar = ({ onSelectDepartment }) => {
   const [showDepartments, setShowDepartments] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
-  
 
   const departments = [
     { name: "Computer Science", icon: <FaLaptopCode /> },
@@ -128,15 +118,13 @@ const AdminSidebar = ({ onSelectDepartment }) => {
     setSelectedDepartment(department);
     onSelectDepartment(department);
     setShowDepartments(true);
-    
-    
-};
+  };
 
-const handleDashboardClick = () => {
+  const handleDashboardClick = () => {
     setSelectedDepartment(null); // Hide students by resetting selected department
     onSelectDepartment(null);
     setShowDepartments(false); // Notify parent component to show dashboard
-};
+  };
 
   return (
     <div
@@ -153,30 +141,40 @@ const handleDashboardClick = () => {
           </h2>
         </div>
         <ul className="mt-10">
-        <li className="mb-6">
-                        <a href="#" className="flex items-center text-lg text-purple-600 hover:bg-purple-200 hover:text-purple-800 p-2 rounded transition duration-300" onClick={handleDashboardClick}>
-                            <FaHome className="mr-3" />
-                            <span className="hidden md:block">Dashboard</span>
-                        </a>
-                    </li>
           <li className="mb-6">
-                        <a href="#" className="flex items-center text-lg text-purple-600 hover:bg-purple-200 hover:text-purple-800 p-2 rounded transition duration-300" onClick={() => setShowDepartments(!showDepartments)}>
-                            <FaBook className="mr-3" />
-                            <span className="hidden md:block">Departments</span>
-                        </a>
-                    </li>
+            <a
+              href="#"
+              className="flex items-center text-lg text-purple-600 hover:bg-purple-200 hover:text-purple-800 p-2 rounded transition duration-300"
+              onClick={handleDashboardClick}
+            >
+              <FaHome className="mr-3" />
+              <span className="hidden md:block">Dashboard</span>
+            </a>
+          </li>
+          <li className="mb-6">
+            <a
+              href="#"
+              className="flex items-center text-lg text-purple-600 hover:bg-purple-200 hover:text-purple-800 p-2 rounded transition duration-300"
+              onClick={() => setShowDepartments(!showDepartments)}
+            >
+              <FaBook className="mr-3" />
+              <span className="hidden md:block">Departments</span>
+            </a>
+          </li>
         </ul>
         {showDepartments && (
-                    <ul className="mt-10">
-                        {departments.map((dept) => (
-                            <li key={dept.name} className="mb-4 ml-4 cursor-pointer text-purple-600 hover:bg-purple-200 hover:text-purple-800 p-2 rounded transition duration-300 flex items-center" onClick={() => handleDepartmentClick(dept.name)}>
-                                {dept.icon} <span className="ml-3">{dept.name}</span>
-                            </li>
-                        ))}
-                    </ul>
-                )}
-
-        
+          <ul className="mt-10">
+            {departments.map((dept) => (
+              <li
+                key={dept.name}
+                className="mb-4 ml-4 cursor-pointer text-purple-600 hover:bg-purple-200 hover:text-purple-800 p-2 rounded transition duration-300 flex items-center"
+                onClick={() => handleDepartmentClick(dept.name)}
+              >
+                {dept.icon} <span className="ml-3">{dept.name}</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
       <Link to="/">
         <button
