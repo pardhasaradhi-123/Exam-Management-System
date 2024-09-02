@@ -5,48 +5,30 @@ export default function ExamSchedule() {
   const examScheduleData = [
     {
       id: 1,
-      subject: "English",
+      testNo: "Assessment 1",
       date: "2024-09-01",
-      time: "01:00 PM - 04:00 PM",
-      duration: "3 hours",
+      time: "01:00 PM - 02:00 PM",
+      duration: "1 hour",
       instructor: "Dr. Emily White",
-      notes: "Focus on essay writing and comprehension.",
+      notes: "Focus on 1 & 2 chapters",
     },
     {
       id: 2,
-      subject: "Mathematics",
-      date: "2024-09-02",
-      time: "09:00 AM - 12:00 PM",
-      duration: "3 hours",
+      testNo: "Assessment 2",
+      date: "2024-10-02",
+      time: "09:00 AM - 10:00 PM",
+      duration: "1 hour",
       instructor: "Prof. John Doe",
-      notes: "Bring a calculator and geometry set.",
+      notes: "Focus on 3, 4& 5 chapters",
     },
     {
       id: 3,
-      subject: "Physics",
-      date: "2024-09-03",
+      testNo: "Assessment 3",
+      date: "2024-11-03",
       time: "01:00 PM - 04:00 PM",
       duration: "3 hours",
       instructor: "Dr. Jane Smith",
-      notes: "Focus on chapters 3-6.",
-    },
-    {
-      id: 4,
-      subject: "Biology",
-      date: "2024-09-04",
-      time: "09:00 AM - 12:00 PM",
-      duration: "3 hours",
-      instructor: "Dr. Richard Green",
-      notes: "Review chapters 7-10, with emphasis on human anatomy.",
-    },
-    {
-      id: 5,
-      subject: "Chemistry",
-      date: "2024-09-05",
-      time: "09:00 AM - 12:00 PM",
-      duration: "3 hours",
-      instructor: "Dr. Alan Brown",
-      notes: "Organic chemistry is a key topic.",
+      notes: "Focus on chapters all chapters.",
     },
   ];
 
@@ -62,7 +44,7 @@ export default function ExamSchedule() {
             className="p-6 rounded-xl shadow-lg bg-gray-100 flex flex-col border-t-4 border-indigo-500 hover:shadow-2xl transform hover:scale-105 transition-transform duration-300 ease-in-out max-sm:p-3 max-sm:w-auto"
           >
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              {exam.subject}
+              {exam.testNo}
             </h2>
             <p className="text-gray-600 flex items-center mb-3 text-lg">
               <FaCalendarAlt className="mr-2 text-indigo-500" /> {exam.date}

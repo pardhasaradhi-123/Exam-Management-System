@@ -1,4 +1,4 @@
-const StudentList = ({ students, department, users }) => {
+const StudentList = ({ students, department }) => {
   return (
     <div className="p-6 bg-gray-100 rounded-lg shadow-lg mt-20">
       <h3 className="text-3xl font-extrabold text-gray-800 mb-6">
@@ -25,7 +25,6 @@ const StudentList = ({ students, department, users }) => {
           ))}
         </tbody>
       </table>
-      {console.log(users)}
     </div>
   );
 };

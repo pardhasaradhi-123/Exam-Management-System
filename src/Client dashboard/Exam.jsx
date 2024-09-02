@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   FaCheckCircle,
   FaExclamationCircle,
@@ -8,6 +8,11 @@ import {
 } from "react-icons/fa";
 
 export default function Exam() {
+  const [isExamCompleted, setIsExamConplted] = useState(false);
+  const [answer, setAnswer] = useState("");
+  const [showResults, setShowResults] = useState(false);
+  const [score, setScore] = useState(0);
+
   const examCardsData = [
     {
       id: 1,
@@ -38,123 +43,173 @@ export default function Exam() {
     },
   ];
 
-  const examProgressData = [
-    {
-      id: 1,
-      examName: "English",
-      icon: FaHourglassHalf,
-      description: "You are almost done with the English exam.",
-      progress: "80%",
-      bgColor: "bg-blue-500",
-      textColor: "text-blue-700",
-      progressColor: "bg-blue-600",
-      status: "In Progress",
-    },
-    {
-      id: 2,
-      examName: "Mathematics",
-      icon: FaCheckCircle,
-      description: "You have completed the Mathematics exam.",
-      progress: "100%",
-      bgColor: "bg-green-500",
-      textColor: "text-green-700",
-      progressColor: "bg-green-600",
-      status: "Completed",
-    },
-    {
-      id: 3,
-      examName: "Physics",
-      icon: FaHourglassHalf,
-      description: "You are halfway through the Physics exam.",
-      progress: "50%",
-      bgColor: "bg-yellow-500",
-      textColor: "text-yellow-900",
-      progressColor: "bg-yellow-600",
-      status: "In Progress",
-    },
-    {
-      id: 4,
-      examName: "Biology",
-      icon: FaCheckCircle,
-      description: "You have completed the Biology exam.",
-      progress: "100%",
-      bgColor: "bg-green-500",
-      textColor: "text-green-700",
-      progressColor: "bg-green-600",
-      status: "Completed",
-    },
-    {
-      id: 5,
-      examName: "Chemistry",
-      icon: FaTimesCircle,
-      description: "You have not started the Chemistry exam yet.",
-      progress: "0%",
-      bgColor: "bg-red-500",
-      textColor: "text-red-700",
-      progressColor: "bg-red-600",
-      status: "Not Started",
-    },
-  ];
+  const dataFromLocal = JSON.parse(localStorage.getItem("questionData"));
+  console.log(dataFromLocal);
+  localStorage.setItem("answers", JSON.stringify);
+
+  const handleSubmitAnswer = () => {
+    const answers = JSON.parse(localStorage.getItem("answers"));
+  };
 
   return (
     <>
       <div className="grid grid-cols-3 gap-4 p-4 max-lg:grid-cols-2 max-sm:grid-cols-1 border-b-2 max-sm:ml-[-1rem]">
-        {examCardsData.map((index) => {
-          return (
-            <article
-              key={index.title}
-              className={`rounded-md shadow-md shadow-violet-200 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:shadow-violet-300 p-4 ${index.bgColor} ${index.textColor}`}
-            >
-              <div className="flex items-center justify-between">
-                <p className="font-semibold text-lg capitalize">
-                  {index.title}
-                </p>
-                <index.icon size={38} />
-              </div>
-              <p className="flex justify-center items-center text-md my-2 p-4 text-gray-600">
-                {index.description}
-              </p>
-              <h1 className="font-semibold text-xl">{index.value}</h1>
-            </article>
-          );
-        })}
-      </div>
-      <div className="grid grid-cols-4 gap-4 mx-4 p-4 mt-5 max-lg:grid-cols-2 max-sm:grid-cols-1 bg-white rounded-md shadow-lg max-sm:ml-[-1rem]">
-        {examProgressData.map((exam) => (
+        {examCardsData.map((index) => (
           <article
-            key={exam.id}
-            className={`rounded-md shadow-md transform transition-transform duration-300 hover:scale-105 p-4 bg-bgGray flex flex-col justify-between`}
+            key={index.title}
+            className={`rounded-md shadow-md shadow-violet-200 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:shadow-violet-300 p-4 ${index.bgColor} ${index.textColor}`}
           >
-            <div>
-              <div className="flex items-center justify-between">
-                <p
-                  className={`font-semibold text-lg capitalize ${exam.textColor}`}
-                >
-                  {exam.examName}
-                </p>
-                <exam.icon size={38} className={exam.textColor} />
-              </div>
-              <p className="flex justify-center items-center text-md my-2 p-4 text-gray-600">
-                {exam.description}
-              </p>
-              <div className="flex items-center justify-between">
-                <h1 className={`font-semibold text-xl ${exam.textColor}`}>
-                  {exam.progress}
-                </h1>
-                <span className={`font-medium text-md ${exam.textColor}`}>
-                  {exam.status}
-                </span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-4 mt-4">
-                <div
-                  className={`${exam.progressColor} h-full rounded-full`}
-                  style={{ width: exam.progress }}
-                ></div>
-              </div>
+            <div className="flex items-center justify-between">
+              <p className="font-semibold text-lg capitalize">{index.title}</p>
+              <index.icon size={38} />
             </div>
+            <p className="flex justify-center items-center text-md my-2 p-4 text-gray-600">
+              {index.description}
+            </p>
+            <h1 className="font-semibold text-xl">{index.value}</h1>
           </article>
         ))}
       </div>
+
+      {isExamCompleted ? (
+        <>
+          <h1>Exam completed!</h1>
+        </>
+      ) : (
+        <div className="mx-4 p-2 mt-5">
+          <h1 className="text-center text-3xl font-bold mb-3">
+            Assessment Examination
+          </h1>
+          <div className="grid grid-cols-3 gap-[1rem] max-md:grid-cols-2 max-sm:grid-cols-1">
+            {dataFromLocal.map((qns, index) => (
+              <div
+                key={index}
+                className="bg-white p-4 rounded-md shadow-md transform transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:shadow-violet-300"
+              >
+                <h2 className="font-semibold text-lg">{qns.question}</h2>
+                <ul className="mt-4">
+                  <li className="my-2">
+                    1{") "}
+                    {qns.options1}
+                  </li>
+                  <li className="my-2">
+                    2{") "}
+                    {qns.option2}
+                  </li>
+                  <li className="my-2">
+                    3{") "}
+                    {qns.option3}
+                  </li>
+                  <li className="my-2">
+                    4{") "}
+                    {qns.option4}
+                  </li>
+                </ul>
+              </div>
+            ))}
+          </div>
+          {!showResults && (
+            <button className="mt-4 p-2 bg-indigo-500 text-white rounded-md uppercase transition-transform duration-300 hover:scale-105">
+              Submit Quiz
+            </button>
+          )}
+          {showResults && (
+            <div className="mt-4 p-2">
+              <h2 className="text-xl">Your Score: {score} /</h2>
+            </div>
+          )}
+          <button
+            className="bg-red-600 text-white p-2 ml-5 mt-4 rounded-md uppercase transition-transform duration-300 hover:scale-105"
+            onClick={() => {
+              setIsExamConplted(true);
+            }}
+          >
+            End Test
+          </button>
+          <div className="flex flex-col gap-3">
+            <form onSubmit={handleSubmitAnswer}>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  className="bg-gray-200 w-full rounded-md p-2"
+                  placeholder="Enter answer"
+                  value={answer}
+                  onChange={(e) => {
+                    setAnswer(e.target.value);
+                  }}
+                />
+                <button className="uppercase bg-violet-500 p-3 rounded-md">
+                  enter
+                </button>
+              </div>
+            </form>
+            <form onSubmit={handleSubmitAnswer}>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  className="bg-gray-200 w-full rounded-md p-2"
+                  placeholder="Enter answer"
+                  value={answer}
+                  onChange={(e) => {
+                    setAnswer(e.target.value);
+                  }}
+                />
+                <button className="uppercase bg-violet-500 p-3 rounded-md">
+                  enter
+                </button>
+              </div>
+            </form>
+            <form onSubmit={handleSubmitAnswer}>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  className="bg-gray-200 w-full rounded-md p-2"
+                  placeholder="Enter answer"
+                  value={answer}
+                  onChange={(e) => {
+                    setAnswer(e.target.value);
+                  }}
+                />
+                <button className="uppercase bg-violet-500 p-3 rounded-md">
+                  enter
+                </button>
+              </div>
+            </form>
+            <form onSubmit={handleSubmitAnswer}>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  className="bg-gray-200 w-full rounded-md p-2"
+                  placeholder="Enter answer"
+                  value={answer}
+                  onChange={(e) => {
+                    setAnswer(e.target.value);
+                  }}
+                />
+                <button className="uppercase bg-violet-500 p-3 rounded-md">
+                  enter
+                </button>
+              </div>
+            </form>
+            <form onSubmit={handleSubmitAnswer}>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  className="bg-gray-200 w-full rounded-md p-2"
+                  placeholder="Enter answer"
+                  value={answer}
+                  onChange={(e) => {
+                    setAnswer(e.target.value);
+                  }}
+                />
+                <button className="uppercase bg-violet-500 p-3 rounded-md">
+                  enter
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 }

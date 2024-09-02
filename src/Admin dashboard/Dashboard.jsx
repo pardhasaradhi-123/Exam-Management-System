@@ -5,7 +5,7 @@ import DashboardGraphs from "./DashboardGraphs";
 import StudentList from "./StudentList";
 
 const Dashboard = ({ selectedDepartment }) => {
-  const students = {
+  let students = {
     "Computer Science": ["Alice", "Bob", "Charlie", "Adarsh", "Micky"],
     Mechanical: ["Dave", "Eve", "Frank", "Bharath", "Naresh"],
     Electrical: ["Grace", "Heidi", "Ivan", "Sai", "Aravind"],

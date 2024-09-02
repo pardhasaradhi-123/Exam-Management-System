@@ -55,15 +55,6 @@ export default function Home() {
       bgColor: "bg-gradient-to-r from-indigo-100 to-indigo-200",
       textColor: "text-indigo-700",
     },
-    {
-      id: 6,
-      name: "study hours logged",
-      icon: FaClock,
-      desc: "Displays the total number of study hours logged by the user.",
-      value: "25 Hours",
-      bgColor: "bg-gradient-to-r from-purple-100 to-purple-200",
-      textColor: "text-purple-700",
-    },
   ];
 
   return (
