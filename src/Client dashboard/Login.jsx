@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function AuthForm() {
   const [isSignUp, setIsSignUp] = useState(true);
@@ -87,10 +88,7 @@ export default function AuthForm() {
         );
 
         if (existingAccount) {
-          setErrors((prev) => ({
-            ...prev,
-            email: "Account with this email already exists",
-          }));
+          toast.warn("Account already exists! Go to Sign In Form");
         } else {
           // Add new account data to localStorage
           const newData = {
@@ -103,24 +101,37 @@ export default function AuthForm() {
 
           localStorage.setItem("authDataList", JSON.stringify(existingData));
 
+          toast.success(`${inputState.username} sign up successfull!`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          setInputState({
+            email: "",
+            password: "",
+            username: "",
+          });
           navigate("/student");
         }
-      } else {
-        // Authenticate user
-        const authenticatedUser = existingData.find(
-          (account) =>
-            account.email === inputState.email &&
-            account.password === inputState.password
-        );
-
-        if (authenticatedUser) {
-          // If authenticated, redirect to the admin dashboard
+      } else if (!isSignUp) {
+        if (
+          inputState.email === "teacher@gmail.com" &&
+          inputState.password === "1234567890"
+        ) {
           navigate("/admin-dashboard");
         } else {
-          setErrors((prev) => ({
-            ...prev,
-            email: "Invalid email or password",
-          }));
+          toast.error("Account is not exists!");
+        }
+        const existingUser = existingData.find(
+          (user) => user.email === inputState.email
+        );
+        if (existingUser) {
+          navigate("/student");
         }
       }
     }
@@ -135,7 +146,19 @@ export default function AuthForm() {
               className={`text-2xl font-bold p-3 ${
                 isSignUp ? "text-indigo-600" : "text-gray-500"
               }`}
-              onClick={() => setIsSignUp(true)}
+              onClick={() => {
+                setIsSignUp(true);
+                setErrors({
+                  email: "",
+                  password: "",
+                  username: "",
+                });
+                setInputState({
+                  email: "",
+                  password: "",
+                  username: "",
+                });
+              }}
             >
               Sign Up
             </button>
@@ -143,7 +166,19 @@ export default function AuthForm() {
               className={`text-2xl font-bold p-3 ${
                 !isSignUp ? "text-indigo-600" : "text-gray-500"
               }`}
-              onClick={() => setIsSignUp(false)}
+              onClick={() => {
+                setIsSignUp(false);
+                setErrors({
+                  email: "",
+                  password: "",
+                  username: "",
+                });
+                setInputState({
+                  email: "",
+                  password: "",
+                  username: "",
+                });
+              }}
             >
               Sign In
             </button>
@@ -195,6 +230,7 @@ export default function AuthForm() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 }
