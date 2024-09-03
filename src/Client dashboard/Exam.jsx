@@ -8,11 +8,6 @@ import {
 } from "react-icons/fa";
 
 export default function Exam() {
-  const [isExamCompleted, setIsExamConplted] = useState(false);
-  const [answer, setAnswer] = useState("");
-  const [showResults, setShowResults] = useState(false);
-  const [score, setScore] = useState(0);
-
   const examCardsData = [
     {
       id: 1,
@@ -47,10 +42,6 @@ export default function Exam() {
   console.log(dataFromLocal);
   localStorage.setItem("answers", JSON.stringify);
 
-  const handleSubmitAnswer = () => {
-    const answers = JSON.parse(localStorage.getItem("answers"));
-  };
-
   return (
     <>
       <div className="grid grid-cols-3 gap-4 p-4 max-lg:grid-cols-2 max-sm:grid-cols-1 border-b-2 max-sm:ml-[-1rem]">
@@ -71,15 +62,11 @@ export default function Exam() {
         ))}
       </div>
 
-      {isExamCompleted ? (
-        <>
-          <h1>Exam completed!</h1>
-        </>
-      ) : (
-        <div className="mx-4 p-2 mt-5">
-          <h1 className="text-center text-3xl font-bold mb-3">
-            Assessment Examination
-          </h1>
+      <div className="mx-4 p-2 mt-5">
+        <h1 className="text-center text-3xl font-bold mb-3">
+          Assessment Examination
+        </h1>
+        {dataFromLocal ? (
           <div className="grid grid-cols-3 gap-[1rem] max-md:grid-cols-2 max-sm:grid-cols-1">
             {dataFromLocal.map((qns, index) => (
               <div
@@ -108,108 +95,10 @@ export default function Exam() {
               </div>
             ))}
           </div>
-          {!showResults && (
-            <button className="mt-4 p-2 bg-indigo-500 text-white rounded-md uppercase transition-transform duration-300 hover:scale-105">
-              Submit Quiz
-            </button>
-          )}
-          {showResults && (
-            <div className="mt-4 p-2">
-              <h2 className="text-xl">Your Score: {score} /</h2>
-            </div>
-          )}
-          <button
-            className="bg-red-600 text-white p-2 ml-5 mt-4 rounded-md uppercase transition-transform duration-300 hover:scale-105"
-            onClick={() => {
-              setIsExamConplted(true);
-            }}
-          >
-            End Test
-          </button>
-          <div className="flex flex-col gap-3">
-            <form onSubmit={handleSubmitAnswer}>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  className="bg-gray-200 w-full rounded-md p-2"
-                  placeholder="Enter answer"
-                  value={answer}
-                  onChange={(e) => {
-                    setAnswer(e.target.value);
-                  }}
-                />
-                <button className="uppercase bg-violet-500 p-3 rounded-md">
-                  enter
-                </button>
-              </div>
-            </form>
-            <form onSubmit={handleSubmitAnswer}>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  className="bg-gray-200 w-full rounded-md p-2"
-                  placeholder="Enter answer"
-                  value={answer}
-                  onChange={(e) => {
-                    setAnswer(e.target.value);
-                  }}
-                />
-                <button className="uppercase bg-violet-500 p-3 rounded-md">
-                  enter
-                </button>
-              </div>
-            </form>
-            <form onSubmit={handleSubmitAnswer}>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  className="bg-gray-200 w-full rounded-md p-2"
-                  placeholder="Enter answer"
-                  value={answer}
-                  onChange={(e) => {
-                    setAnswer(e.target.value);
-                  }}
-                />
-                <button className="uppercase bg-violet-500 p-3 rounded-md">
-                  enter
-                </button>
-              </div>
-            </form>
-            <form onSubmit={handleSubmitAnswer}>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  className="bg-gray-200 w-full rounded-md p-2"
-                  placeholder="Enter answer"
-                  value={answer}
-                  onChange={(e) => {
-                    setAnswer(e.target.value);
-                  }}
-                />
-                <button className="uppercase bg-violet-500 p-3 rounded-md">
-                  enter
-                </button>
-              </div>
-            </form>
-            <form onSubmit={handleSubmitAnswer}>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  className="bg-gray-200 w-full rounded-md p-2"
-                  placeholder="Enter answer"
-                  value={answer}
-                  onChange={(e) => {
-                    setAnswer(e.target.value);
-                  }}
-                />
-                <button className="uppercase bg-violet-500 p-3 rounded-md">
-                  enter
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+        ) : (
+          <h1 className="text-center">Question paper not issued!</h1>
+        )}
+      </div>
     </>
   );
 }
