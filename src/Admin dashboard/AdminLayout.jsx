@@ -1,21 +1,14 @@
-import { useState } from "react";
 import AdminSidebar from "./AdminSidebar";
 import Dashboard from "./Dashboard";
 
 const AdminLayout = () => {
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
-
-  const handleSelectDepartment = (department) => {
-    setSelectedDepartment(department);
-  };
-
   return (
     <>
       <div className="flex gap-8">
-        <AdminSidebar onSelectDepartment={handleSelectDepartment} />
+        <AdminSidebar />
       </div>
-      <div className="w-100% md:ml-60 ">
-        <Dashboard selectedDepartment={selectedDepartment} />
+      <div className="md:ml-60 ml-80">
+        <Dashboard />
       </div>
     </>
   );

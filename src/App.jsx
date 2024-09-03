@@ -7,6 +7,7 @@ import Login from "./Client dashboard/Login";
 import AdminLayout from "./Admin dashboard/AdminLayout";
 import "react-toastify/dist/ReactToastify.css";
 import AddQuestionsForm from "./Admin dashboard/AddQuestionsForm";
+import Students from "./Admin dashboard/Students";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         </Route>
         <Route path="/admin-dashboard" element={<AdminLayout />} />
         <Route path="/set-questions" element={<AddQuestionsForm />} />
+        <Route path="/students" element={<Students />} />
       </Routes>
     </BrowserRouter>
   );

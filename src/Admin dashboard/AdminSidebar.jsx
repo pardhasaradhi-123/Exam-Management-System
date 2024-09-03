@@ -8,48 +8,15 @@ import {
   FaBolt,
   FaBuilding,
   FaQuestionCircle,
+  FaUser,
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import AddQuestionsForm from "./AddQuestionsForm"; // Import the AddQuestionsForm component
 
-const AdminSidebar = ({ onSelectDepartment }) => {
+const AdminSidebar = () => {
   const navigate = useNavigate();
-  const [showDepartments, setShowDepartments] = useState(false);
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
+
   const [showQuestionsForm, setShowQuestionsForm] = useState(false); // State to toggle the questions form
-
-  const departments = [
-    { name: "Computer Science", icon: <FaLaptopCode /> },
-    { name: "Mechanical", icon: <FaCogs /> },
-    { name: "Electrical", icon: <FaBolt /> },
-    { name: "Civil", icon: <FaBuilding /> },
-  ];
-
-  const students = {
-    "Computer Science": [
-      "Alice",
-      "Bob",
-      "Charlie",
-      "Adarsh",
-      "Micky",
-      "Deviprasad",
-    ],
-    Mechanical: ["Dave", "Eve", "Frank", "Bharath", "Naresh"],
-    Electrical: ["Grace", "Heidi", "Ivan", "Sai", "Aravind"],
-    Civil: ["Jack", "Ken", "Liam", "dileep", "Kattappa"],
-  };
-
-  const handleDepartmentClick = (department) => {
-    setSelectedDepartment(department);
-    onSelectDepartment(department);
-    setShowDepartments(true);
-  };
-
-  const handleDashboardClick = () => {
-    setSelectedDepartment(null); // Hide students by resetting selected department
-    onSelectDepartment(null);
-    setShowDepartments(false); // Notify parent component to show dashboard
-  };
 
   const handleQuestionsClick = () => {
     navigate("/set-questions");
@@ -72,11 +39,21 @@ const AdminSidebar = ({ onSelectDepartment }) => {
         <ul className="mt-10">
           <li className="mb-6">
             <Link
+              to={"/admin-dashboard"}
               className="flex items-center text-lg text-indigo-600 hover:bg-indigo-200 hover:text-indigo-800 p-2 rounded transition duration-300"
-              onClick={handleDashboardClick}
+              // onClick={handleDashboardClick}
             >
               <FaHome className="mr-3" />
               <span className="hidden md:block">Dashboard</span>
+            </Link>
+          </li>
+          <li className="mb-6">
+            <Link
+              to={"/students"}
+              className="flex items-center text-lg text-indigo-600 hover:bg-indigo-200 hover:text-indigo-800 p-2 rounded transition duration-300"
+            >
+              <FaUser className="mr-3" />
+              <span className="hidden md:block">Students</span>
             </Link>
           </li>
           <li className="mb-6">
@@ -89,29 +66,8 @@ const AdminSidebar = ({ onSelectDepartment }) => {
               <span className="hidden md:block">Questions</span>
             </Link>
           </li>
-          <li className="mb-6">
-            <Link
-              className="flex items-center text-lg text-indigo-600 hover:bg-indigo-200 hover:text-indigo-800 p-2 rounded transition duration-300"
-              onClick={() => setShowDepartments(!showDepartments)}
-            >
-              <FaBook className="mr-3" />
-              <span className="hidden md:block">Departments</span>
-            </Link>
-          </li>
         </ul>
-        {showDepartments && (
-          <ul className="mt-10">
-            {departments.map((dept) => (
-              <li
-                key={dept.name}
-                className="mb-4 ml-4 cursor-pointer text-indigo-600 hover:bg-indigo-200 hover:text-indigo-800 p-2 rounded transition duration-300 flex items-center"
-                onClick={() => handleDepartmentClick(dept.name)}
-              >
-                {dept.icon} <span className="ml-3">{dept.name}</span>
-              </li>
-            ))}
-          </ul>
-        )}
+
         {showQuestionsForm && (
           <div className="mt-10">
             <AddQuestionsForm />
